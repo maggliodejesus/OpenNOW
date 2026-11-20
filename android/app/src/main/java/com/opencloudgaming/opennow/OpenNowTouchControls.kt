@@ -941,7 +941,7 @@ private fun PortraitTouchControls(
                 appearanceKey = "ADS+F",
                 sourceId = "touch-portrait-ads-fire",
                 client = client,
-                size = 52.dp * controlScale,
+                size = 52.dp * buttonScale * layoutScale,
                 onPressTone = onButtonTone,
                 customCapLabel = "ADS+F",
                 defaultDragToAim = true,

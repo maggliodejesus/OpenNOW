@@ -21,6 +21,7 @@ internal data class KeyboardButtonOption(
     val category: KeyboardButtonCategory,
     val keyCode: Int? = null,
     val mouseButton: Int? = null,
+    val secondaryMouseButton: Int? = null,
 )
 
 private fun keyOption(
@@ -43,6 +44,7 @@ internal val keyboardButtonCatalog: List<KeyboardButtonOption> by lazy {
         add(mouseOption("mouse_left", "Mouse left button", "LMB", 1))
         add(mouseOption("mouse_middle", "Mouse middle button", "MMB", 2))
         add(mouseOption("mouse_right", "Mouse right button", "RMB", 3))
+        add(KeyboardButtonOption("mouse_ads_fire", "ADS + Fire (RMB + LMB)", "ADS+F", KeyboardButtonCategory.Mouse, mouseButton = 3, secondaryMouseButton = 1))
 
         addAll(('A'..'Z').map { letter ->
             val index = letter - 'A'

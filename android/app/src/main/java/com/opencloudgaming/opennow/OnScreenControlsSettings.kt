@@ -201,6 +201,15 @@ internal fun OnScreenControlsSettings(
                                         { onChange(touch.withControlVisible(TouchControlGroup.LeftStick, it)) },
                                     )
                                 }
+                                item {
+                                    SettingSwitch(
+                                        label = stringResource(R.string.settings_touch_wasd_auto_sprint),
+                                        checked = touch.keyboardStickAutoSprint,
+                                        description = stringResource(R.string.settings_touch_wasd_auto_sprint_desc),
+                                    ) { enabled ->
+                                        onChange(touch.copy(keyboardStickAutoSprint = enabled))
+                                    }
+                                }
                                 items(touch.keyboardButtons, key = { it.id }) { button ->
                                     ControlNavigationRow(
                                         label = keyboardButtonOption(button.actionId)?.label ?: button.actionId,
@@ -337,6 +346,20 @@ private fun GamepadVisibilitySettings(touch: AndroidTouchSettings, onChange: (An
             onChange(touch.withControlVisible(group, visible))
         }
     }
+    SettingSwitch(
+        label = stringResource(R.string.settings_touch_separate_face_buttons),
+        checked = touch.separateFaceButtons,
+        description = stringResource(R.string.settings_touch_separate_face_buttons_desc),
+    ) { separate ->
+        onChange(touch.copy(separateFaceButtons = separate))
+    }
+    SettingSwitch(
+        label = stringResource(R.string.settings_touch_gamepad_ads_fire),
+        checked = touch.gamepadAdsFireButton,
+        description = stringResource(R.string.settings_touch_gamepad_ads_fire_desc),
+    ) { enabled ->
+        onChange(touch.copy(gamepadAdsFireButton = enabled))
+    }
 }
 
 @Composable
@@ -394,12 +417,13 @@ private fun SticksSettings(touch: AndroidTouchSettings, onChange: (AndroidTouchS
         val touchAimOptions = listOf(
             SettingsChoiceOption(TouchAimMode.LockJoystick.name, stringResource(R.string.stream_joysticks_lock_joystick)),
             SettingsChoiceOption(TouchAimMode.LockZone.name, stringResource(R.string.stream_joysticks_lock_zone)),
+            SettingsChoiceOption(TouchAimMode.TouchSwipe.name, stringResource(R.string.stream_joysticks_touch_swipe)),
         )
         ChoiceOptionRow(stringResource(R.string.stream_joysticks_aim_mode), touchAimOptions, touch.aimMode.name) { modeName ->
             val mode = TouchAimMode.valueOf(modeName)
             onChange(touch.copy(aimMode = mode))
         }
-        TouchSettingsExpansion(touch.aimMode == TouchAimMode.LockZone) {
+        TouchSettingsExpansion(touch.aimMode == TouchAimMode.LockZone || touch.aimMode == TouchAimMode.TouchSwipe) {
             TouchSettingsSlider(
                 stringResource(R.string.stream_joysticks_aim_zone_scale),
                 touch.aimZoneScale,
@@ -430,6 +454,13 @@ private fun SticksSettings(touch: AndroidTouchSettings, onChange: (AndroidTouchS
     }
     TouchSettingsSlider(stringResource(R.string.stream_joysticks_dead_zone), touch.joystickDeadZone, 0f, 0.3f, 0.01f) { value ->
         onChange(touch.copy(joystickDeadZone = value))
+    }
+    SettingSwitch(
+        label = stringResource(R.string.settings_touch_left_stick_sprint_lock),
+        checked = touch.leftStickSprintLock,
+        description = stringResource(R.string.settings_touch_left_stick_sprint_lock_desc),
+    ) { enabled ->
+        onChange(touch.copy(leftStickSprintLock = enabled))
     }
     if (!touch.keyboardModeEnabled) {
         SettingSwitch(

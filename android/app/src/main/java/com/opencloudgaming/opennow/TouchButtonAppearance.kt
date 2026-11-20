@@ -12,9 +12,10 @@ data class TouchButtonAppearance(
     val shape: TouchButtonShape = TouchButtonShape.Theme,
     val toggle: Boolean = false,
     val sizeScale: Float = 1f,
+    val dragToAim: Boolean? = null,
 )
 
-internal val touchButtonKeys = listOf("A", "B", "X", "Y", "LT", "RT", "LB", "RB", "LS", "RS", "◀", "▶") +
+internal val touchButtonKeys = listOf("A", "B", "X", "Y", "LT", "RT", "ADS+F", "LB", "RB", "LS", "RS", "◀", "▶") +
     (1..TOUCH_EXTRA_BUTTON_COUNT).map { "extra$it" }
 internal fun AndroidTouchSettings.touchButtonAppearanceKeys(): List<String> =
     (touchButtonKeys.filterNot { it.startsWith("keyboard_") } + keyboardButtons.map(KeyboardOverlayButton::appearanceKey)).distinct()

@@ -321,6 +321,7 @@ enum class TouchJoystickMode {
 enum class TouchAimMode {
     LockJoystick,
     LockZone,
+    TouchSwipe,
 }
 
 /** Independently hideable pieces of the on-screen controller. */
@@ -463,6 +464,10 @@ data class AndroidTouchSettings(
     val aimZoneScale: Float = 1f,
     /** Multiplies Lock Zone right-stick response without changing the zone footprint. */
     val aimZoneSensitivity: Float = 1f,
+    val separateFaceButtons: Boolean = false,
+    val gamepadAdsFireButton: Boolean = true,
+    val leftStickSprintLock: Boolean = true,
+    val keyboardStickAutoSprint: Boolean = true,
     val joystickDeadZone: Float = DEFAULT_TOUCH_JOYSTICK_DEAD_ZONE,
     /** Opt-in motion aiming. Kept off for compatibility and to avoid unexpected camera motion. */
     val gyroscopeEnabled: Boolean = false,

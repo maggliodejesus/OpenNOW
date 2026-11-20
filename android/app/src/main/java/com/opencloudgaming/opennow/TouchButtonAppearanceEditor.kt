@@ -76,6 +76,7 @@ private fun touchButtonName(key: String, touch: AndroidTouchSettings): String = 
     key == "keyboard_f" -> "F key"
     key == "keyboard_q" -> "Q key"
     key.startsWith("extra") -> stringResource(R.string.settings_touch_extra_button, key.removePrefix("extra").toInt())
+    key == "ADS+F" -> "ADS + Fire (LT + RT)"
     key == "◀" -> "Select"
     key == "▶" -> "Start"
     else -> key
@@ -130,12 +131,13 @@ internal fun TouchButtonAppearanceDialog(
     var shape by rememberSaveable(button) { mutableStateOf(saved.shape) }
     var sizeScale by rememberSaveable(button) { mutableStateOf(saved.sizeScale) }
     var toggle by rememberSaveable(button) { mutableStateOf(saved.toggle) }
+    var dragToAim by rememberSaveable(button) { mutableStateOf(saved.dragToAim) }
     val appearanceOptions: @Composable () -> Unit = {
         CompositionLocalProvider(
             LocalTouchSkin provides touchSkinColors(touch.touchControllerStyle, 1f, touchSkinAccent(touch)),
             LocalTouchSkinForm provides touchSkinForm(touch.touchControllerStyle),
             LocalTouchButtonLabels provides true,
-            LocalTouchButtonAppearances provides mapOf(button to TouchButtonAppearance(label, icon, shape, toggle, sizeScale)),
+            LocalTouchButtonAppearances provides mapOf(button to TouchButtonAppearance(label, icon, shape, toggle, sizeScale, dragToAim)),
         ) {
             Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                 TouchCapFace(touchButtonName(button, touch), false, 72.dp, appearanceKey = button)
@@ -179,6 +181,18 @@ internal fun TouchButtonAppearanceDialog(
             Switch(checked = toggle, onCheckedChange = { toggle = it })
         }
         Text(stringResource(R.string.touch_button_toggle_hint), style = MaterialTheme.typography.bodySmall)
+        val defaultDragAim = button == "RT" ||
+            button == "ADS+F" ||
+            button.startsWith("keyboard_mouse_left") ||
+            button.startsWith("keyboard_mouse_ads_fire")
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(stringResource(R.string.touch_button_drag_to_aim), modifier = Modifier.weight(1f))
+            Switch(
+                checked = dragToAim ?: defaultDragAim,
+                onCheckedChange = { dragToAim = it },
+            )
+        }
+        Text(stringResource(R.string.touch_button_drag_to_aim_hint), style = MaterialTheme.typography.bodySmall)
     }
     val iconOptions: @Composable (Int) -> Unit = { iconColumns ->
         Text(stringResource(R.string.touch_custom_icon), style = MaterialTheme.typography.titleSmall)
@@ -206,7 +220,7 @@ internal fun TouchButtonAppearanceDialog(
             }
         }
         if (!touch.touchButtonLabels) Text(stringResource(R.string.touch_labels_enable_hint))
-        TextButton(onClick = { label = ""; icon = null; shape = TouchButtonShape.Theme; toggle = false; sizeScale = 1f }) {
+        TextButton(onClick = { label = ""; icon = null; shape = TouchButtonShape.Theme; toggle = false; sizeScale = 1f; dragToAim = null }) {
             Text(stringResource(R.string.touch_editor_reset))
         }
     }
@@ -217,7 +231,7 @@ internal fun TouchButtonAppearanceDialog(
         actions = {
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.touch_editor_cancel)) }
             TextButton(onClick = {
-                onChange(touch.withButtonAppearance(button, TouchButtonAppearance(label, icon, shape, toggle, sizeScale)))
+                onChange(touch.withButtonAppearance(button, TouchButtonAppearance(label, icon, shape, toggle, sizeScale, dragToAim)))
                 onDismiss()
             }) { Text(stringResource(R.string.touch_editor_save)) }
         },

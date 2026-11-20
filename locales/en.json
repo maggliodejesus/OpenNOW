@@ -1066,6 +1066,17 @@
     "touch_icon_heal": "Heal",
     "touch_icon_inventory": "Inventory",
     "touch_icon_map": "Map",
-    "touch_icon_menu": "Menu"
+    "touch_icon_menu": "Menu",
+    "stream_joysticks_touch_swipe": "Touch swipe (COD Mobile)",
+    "touch_button_drag_to_aim": "Drag to aim while holding",
+    "touch_button_drag_to_aim_hint": "Slide the same finger while holding this button to move the camera (great for firing & recoil control).",
+    "settings_touch_separate_face_buttons": "Individual face buttons (A/B/X/Y)",
+    "settings_touch_separate_face_buttons_desc": "Unlock A, B, X, and Y so each button can be placed anywhere independently.",
+    "settings_touch_wasd_auto_sprint": "WASD stick auto-sprint",
+    "settings_touch_wasd_auto_sprint_desc": "Hold Left Shift automatically when pushing the WASD stick forward past 85%.",
+    "settings_touch_gamepad_ads_fire": "Dedicated ADS + Fire button (LT + RT)",
+    "settings_touch_gamepad_ads_fire_desc": "Show a combined ADS + Fire button beside RT with drag-to-aim recoil control.",
+    "settings_touch_left_stick_sprint_lock": "Left stick auto-sprint lock",
+    "settings_touch_left_stick_sprint_lock_desc": "Slide the left stick far above its top edge and release to lock full forward movement (for Warzone auto tactical sprint)."
   }
 }
